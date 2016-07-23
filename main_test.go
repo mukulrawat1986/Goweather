@@ -30,4 +30,7 @@ func Test_E2ERun(t *testing.T) {
 
 	a.Contains(res, "You entered the city:")
 	a.Contains(res, "Dehradun")
+	a.Contains(res, "Weather Information")
+	a.Contains(res, "City: Dehra Dun")
+	a.Contains(res, "Weather: broken clouds")
 }

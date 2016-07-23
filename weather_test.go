@@ -45,7 +45,6 @@ func Test_GetWeather_WithResults(t *testing.T) {
 		a.Equal(weather.CityName, "Dehra Dun")
 		a.Equal(weather.ID, 1273313)
 		a.Equal(weather.Weather[0].ID, 500)
-
 	})
 
 }

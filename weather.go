@@ -10,9 +10,9 @@ import (
 type WeatherData struct {
 	Cordinate Coord     `json:"coord"`
 	Weather   []Weather `json:"weather`
-	main      Main      `json:"main"`
+	Main      MainData  `json:"main"`
 	ID        int       `json:"id"`
-	CityName  string    `json:"name"`
+	CityName  string    `json:"name,omitempty"`
 	COD       int       `json:"cod"`
 }
 
@@ -22,23 +22,29 @@ type Coord struct {
 }
 
 type Weather struct {
-	ID    int    `json:"id`
+	ID    int    `json:"id"`
 	Main  string `json:"main"`
 	Descr string `json:"description"`
 }
 
-type Main struct {
-	Temperatur     float64 `json:"temp"`
+type MainData struct {
+	Temperature    float64 `json:"temp"`
 	Pressure       float64 `json:"pressure"`
 	TemperatureMin float64 `json:"temp_min"`
 	TemperatureMax float64 `json:"temp_max"`
+}
+
+func (m *MainData) KelvinToCelsius() {
+	m.Temperature -= 273
+	m.TemperatureMax -= 273
+	m.TemperatureMin -= 273
 }
 
 // GetWeather gets weather data from OpenWeatherMap
 func GetWeather(city string) (WeatherData, error) {
 
 	// set up the url
-	u := fmt.Sprintf("%s/weather?APPID=%s&query=%s", ApiRoot_OpenWeather, ApiKey_OpenWeather, url.QueryEscape(city))
+	u := fmt.Sprintf("%s/weather?APPID=%s&q=%s", ApiRoot_OpenWeather, ApiKey_OpenWeather, url.QueryEscape(city))
 
 	data := WeatherData{}
 
@@ -60,6 +66,8 @@ func GetWeather(city string) (WeatherData, error) {
 	if data.COD == 404 {
 		return WeatherData{}, fmt.Errorf("There is no such city.")
 	}
+
+	data.Main.KelvinToCelsius()
 
 	return data, nil
 }
