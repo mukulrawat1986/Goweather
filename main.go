@@ -8,6 +8,8 @@ import (
 )
 
 var CityNames = []string{}
+var ApiRoot_OpenWeather = "http://api.openweathermap.org/data/2.5/"
+var ApiKey_OpenWeather = ""
 
 func init() {
 
